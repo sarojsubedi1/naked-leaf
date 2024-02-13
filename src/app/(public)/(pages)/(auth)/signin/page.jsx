@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { CheckToken } from "@/hooks/auth/check-token";
 
-import { toast } from "sonner";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,10 +44,7 @@ const LogIn = () => {
     try {
       const response = await axios.post(`${API_URL}/users/auth`, userData);
       Cookies.set("token", `${response.data.token}`, { expires: 7 });
-      toast.success(response.data.message);
-      router.push("/");
-      router.refresh();
-      return response.data;
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +105,7 @@ const LogIn = () => {
               type="submit"
               className="mt-8 w-full rounded-md bg-primary hover:bg-primary/90 p-4 text-xl font-extrabold text-white"
             >
-              Sign Up
+              Sign In
             </button>
             <div className="pt-4 text-center text-sm  text-gray-400  ">
               <p>

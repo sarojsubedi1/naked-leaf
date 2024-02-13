@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
 
-import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -19,6 +18,7 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { EditProfile } from "@/components/edit-profile";
 
+import { CheckToken } from "@/hooks/auth/check-token";
 import { useAuth } from "@/lib/fetchers/users/use-auth";
 import { useCart } from "@/utils/cartContext";
 import { useRouter } from "next/navigation";
@@ -26,12 +26,16 @@ import { useRouter } from "next/navigation";
 const UserPage = ({ params }) => {
   const { resetCart } = useCart();
   const router = useRouter();
+  const { user } = CheckToken();
+
+  useEffect(() => {
+    !user && router.push("/");
+  });
 
   const handleLogOut = async () => {
     Cookies.remove("token");
     resetCart();
-    toast.success("Log out Sucessfully");
-    router.push("/");
+    window.location.reload();
   };
 
   const { data, error } = useAuth(params.id);

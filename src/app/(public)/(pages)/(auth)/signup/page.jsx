@@ -12,6 +12,7 @@ import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { API_URL } from "@/lib/constants";
 
 const Register = () => {
   const router = useRouter();
@@ -48,14 +49,10 @@ const Register = () => {
 
   const onSubmit = async (userData) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/users",
-        userData,
-      );
+      const response = await axios.post(`${API_URL}/users`, userData);
       Cookies.set("token", `${response.data.token}`, { expires: 7 });
+      window.location.reload();
       toast.success(response.data.message);
-      router.push("/");
-      return response.data;
     } catch (error) {
       console.log(error);
     }

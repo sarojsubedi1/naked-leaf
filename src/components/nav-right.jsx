@@ -15,12 +15,14 @@ export default function NavRight() {
   }
   return (
     <>
-      <Link href="/signin">
-        <Button variant="outline">Sign In</Button>
-      </Link>
-      <Link href="/signup">
-        <Button>Sign Up</Button>
-      </Link>
+      <div className="w-full flex justify-between md:gap-6">
+        <Link href="/signin">
+          <Button variant="outline">Sign In</Button>
+        </Link>
+        <Link href="/signup">
+          <Button>Sign Up</Button>
+        </Link>
+      </div>
     </>
   );
 }
@@ -42,7 +44,7 @@ const Avata = ({ id }) => {
 
   return (
     <>
-      <Link href={`/profile/${data.id}`}>
+      <Link href={`/profile/${data.id}`} className="flex gap-3 items-center">
         <Avatar>
           <AvatarImage
             src={data.profile}
@@ -51,8 +53,11 @@ const Avata = ({ id }) => {
             height={50}
             className="w-10 h-10 rounded-full"
           />
-          <AvatarFallback>{data.name}</AvatarFallback>
+          <AvatarFallback className="h-10 w-10">
+            <AvatarSkeleton />
+          </AvatarFallback>
         </Avatar>
+        <p className="md:hidden">{data.name}</p>
       </Link>
     </>
   );

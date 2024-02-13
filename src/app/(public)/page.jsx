@@ -1,3 +1,4 @@
+"use client";
 import Background from "../../../public/nleaf.jpeg";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +9,17 @@ import AboutUs from "@/components/about-us";
 import WhyDrinkTea from "@/components/why-drink-tea";
 import WhyUs from "@/components/why-us";
 import FeaturedProducts from "@/components/fet-products";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { CheckToken } from "@/hooks/auth/check-token";
 
 export default function Home() {
+  const router = useRouter();
+  const { user } = CheckToken();
+
+  useEffect(() => {
+    user?.role === "admin" && router.push("/dashboard");
+  });
   return (
     <>
       <section className="relative w-full h-[80vh] bg-primary/50 flex items-center justify-center">
