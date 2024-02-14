@@ -2,7 +2,7 @@
 import EditProductForm from "./edit-form";
 import { useProduct } from "@/lib/fetchers/products";
 
-const AddProduct = ({ params }) => {
+const EditProduct = ({ params }) => {
   const { data, error } = useProduct(params.id);
 
   if (!data && !error) {
@@ -20,4 +20,4 @@ const AddProduct = ({ params }) => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

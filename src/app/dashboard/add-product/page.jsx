@@ -3,7 +3,6 @@
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
-import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,21 +22,24 @@ const AddProduct = () => {
 
   const schema = z.object({
     title: z.string(),
+    featured: z.enum(["true", "false"]),
     dec: z.string(),
     category: z.string(),
     countInStock: z.number(),
     price: z.number(),
-    image: z.unknown(),
+    image: z.any(),
   });
 
-  const { register, handleSubmit, reset, formState } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
   });
   const { isSubmitting } = formState;
 
   const onSubmit = async (formData) => {
+    console.log(formData);
     const productData = new FormData();
     productData.append("title", formData.title);
+    productData.append("featured", String(formData.featured));
     productData.append("dec", formData.dec);
     productData.append("category", formData.category);
     productData.append("countInStock", String(formData.countInStock));
@@ -77,6 +79,19 @@ const AddProduct = () => {
                         {...register("title")}
                       />
                     </div>
+
+                    <div className="mt-4">
+                      <Label htmlFor="featured">Featured</Label>
+                      <select
+                        className="rounded-none w-full px-3 py-2 border border-gray-300 sm:text-sm"
+                        id="featured"
+                        name="featured"
+                        {...register("featured")}
+                      >
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
                     <div className="mt-4">
                       <Label htmlFor="product-name">Product Description</Label>
                       <Textarea
@@ -114,7 +129,8 @@ const AddProduct = () => {
                   </div>
                 </div>
               </div>
-
+            </div>
+            <div className="flex-1">
               <div>
                 <h2 className="font-semibold text-lg p-4">Inventory</h2>
                 <div className="border border-primary rounded mx-6">
@@ -134,8 +150,7 @@ const AddProduct = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex-1">
+
               <div>
                 <h2 className="font-semibold text-lg p-4">Product Images</h2>
                 <div className="border border-primary rounded mx-6">
@@ -175,7 +190,9 @@ const AddProduct = () => {
               </div>
 
               <div className="my-6 mx-4 flex justify-between">
-                <Button variant="outline">Discard</Button>
+                <Button variant="outline" onClick={() => router.back()}>
+                  Cancel
+                </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting}

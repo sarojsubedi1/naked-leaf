@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import { Loader } from "@/components/svg";
 import { CategoryData } from "@/lib/fetchers/category";
 
 const EditProductForm = ({ product }) => {
+  const router = useRouter();
   const Categories = CategoryData();
 
   const { register, handleSubmit, formState } = useForm({
@@ -53,7 +55,7 @@ const EditProductForm = ({ product }) => {
                       />
                     </div>
                     <div className="mt-4">
-                      <Label htmlFor="product-name">Featured</Label>
+                      <Label htmlFor="featured">Featured</Label>
                       <select
                         className="rounded-none w-full px-3 py-2 border border-gray-300 sm:text-sm"
                         name="featured"
@@ -171,7 +173,9 @@ const EditProductForm = ({ product }) => {
               </div>
 
               <div className="my-6 mx-4 flex justify-between">
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" onClick={() => router.back()}>
+                  Cancel
+                </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting}

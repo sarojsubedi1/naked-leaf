@@ -1,7 +1,9 @@
-import Link from "next/link";
+"use client";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
+  const router = useRouter();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 text-green-900">
       <div className="h-24 w-24 text-primary" />
@@ -11,7 +13,10 @@ export default function NotFound() {
       </p>
       <div className="flex items-center mt-8">
         <div className="h-6 w-6 text-primary mr-2" />
-        <Button className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/85">
+        <Button
+          onClick={() => router.back()}
+          className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/85"
+        >
           Go Back
         </Button>
       </div>

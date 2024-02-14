@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { API_URL } from "@/lib/constants";
 
 export const AddNewProduct = async (productData) => {
+  console.log(productData);
   try {
     const response = await fetch(`${API_URL}/products`, {
       method: "POST",
