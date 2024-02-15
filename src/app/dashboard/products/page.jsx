@@ -3,16 +3,12 @@
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-import * as react from "react";
-import axios from "axios";
-
-import { toast } from "sonner";
 import { useEffect } from "react";
 import { CheckToken } from "@/hooks/auth/check-token";
 import { useRouter } from "next/navigation";
 
 import Link from "next/link";
-import { useProducts } from "@/features/product/use-products";
+import { useProducts } from "@/lib/fetchers/products";
 
 import { Button } from "@/components/ui/button";
 
