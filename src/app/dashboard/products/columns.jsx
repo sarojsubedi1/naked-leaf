@@ -108,10 +108,7 @@ export const columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <Link href={`/dashboard/edit-product/${product._id}`}>
-              <DropdownMenuItem
-                onClick={() => console.log(product._id)}
-                className="bg-green-600 text-white focus:bg-green-600/70 focus:text-white"
-              >
+              <DropdownMenuItem className="bg-green-600 text-white focus:bg-green-600/70 focus:text-white">
                 Edit
               </DropdownMenuItem>
               <DropdownMenuSeparator />

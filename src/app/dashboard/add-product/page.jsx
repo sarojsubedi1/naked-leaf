@@ -36,7 +36,6 @@ const AddProduct = () => {
   const { isSubmitting } = formState;
 
   const onSubmit = async (formData) => {
-    console.log(formData);
     const productData = new FormData();
     productData.append("title", formData.title);
     productData.append("featured", String(formData.featured));

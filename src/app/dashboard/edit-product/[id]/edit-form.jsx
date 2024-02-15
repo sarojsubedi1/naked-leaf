@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -11,25 +12,54 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader } from "@/components/svg";
 
 import { CategoryData } from "@/lib/fetchers/category";
+import Edit from "./edit-product";
 
 const EditProductForm = ({ product }) => {
   const router = useRouter();
   const Categories = CategoryData();
 
+  const defaultValues = {
+    title: product.title,
+    featured: product.featured,
+    dec: product.dec,
+    countInStock: product.countInStock,
+    price: product.price,
+    category: product.category,
+    image: null,
+  };
+
   const { register, handleSubmit, formState } = useForm({
-    defaultValues: {
-      title: product.title,
-      featured: product.featured,
-      dec: product.dec,
-      countInStock: product.countInStock,
-      price: product.price,
-      category: product.category,
-    },
+    defaultValues,
   });
   const { isSubmitting } = formState;
 
   const onSubmit = async (formData) => {
-    console.log(formData);
+    const changedValues = {};
+
+    for (let key in formData) {
+      if (key === "image" && formData.image instanceof File) {
+        changedValues.image = formData.image;
+      } else if (formData[key] !== defaultValues[key]) {
+        changedValues[key] = formData[key];
+      }
+    }
+
+    const productData = new FormData();
+
+    for (let key in changedValues) {
+      if (key === "image") {
+        productData.append(key, changedValues[key][0]);
+      } else {
+        productData.append(key, String(changedValues[key]));
+      }
+    }
+    const result = await Edit(productData, product._id);
+    if (result.success) {
+      router.push("/dashboard/products");
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
+    }
   };
 
   return (
@@ -59,6 +89,7 @@ const EditProductForm = ({ product }) => {
                       <select
                         className="rounded-none w-full px-3 py-2 border border-gray-300 sm:text-sm"
                         name="featured"
+                        id="featured"
                         {...register("featured")}
                       >
                         <option value={true}>Yes</option>
