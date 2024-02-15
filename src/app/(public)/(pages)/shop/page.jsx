@@ -25,7 +25,9 @@ export default function Shop() {
           placeholder="Search Product"
           onChange={(e) => setSearch(e.target.value)}
         />
-        <ProductCard products={data} search={search} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <ProductCard products={data} search={search} />
+        </div>
       </div>
     </>
   );
