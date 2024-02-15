@@ -56,7 +56,7 @@ const EditProductForm = ({ product }) => {
     const result = await Edit(productData, product._id);
     if (result.success) {
       router.push("/dashboard/products");
-      toast.success(result.message);
+      toast.success("Product updated sucessfully");
     } else {
       toast.error(result.message);
     }
