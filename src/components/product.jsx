@@ -31,29 +31,14 @@ export default function Product({ product }) {
                   {product.dec}
                 </p>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-0.5">
-                  <Star className="w-5 h-5 text-primary fill-primary" />
-                  <Star className="w-5 h-5 text-primary fill-primary" />
-                  <Star className="w-5 h-5 text-primary fill-primary" />
-                  <Star className="w-5 h-5 text-primary fill-primary" />
-                  <Star className="w-5 h-5 text-primary " />
-                </div>
-              </div>
             </div>
             <div className="text-4xl font-bold ml-auto text-green-900 dark:text-green-100">
               ${product.price}
             </div>
           </div>
-          <form className="grid gap-4 md:gap-10">
-            <div className="grid gap-2">
-              <p className="text-base text-green-800 dark:text-green-200">
-                Quantity
-              </p>
-              <SelectQty />
-            </div>
+          <div className="grid gap-4 md:gap-10">
             <AddToCart product={product} />
-          </form>
+          </div>
         </div>
       </div>
     </section>

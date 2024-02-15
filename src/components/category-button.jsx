@@ -1,8 +1,10 @@
 "use client";
 import { useCategories } from "@/lib/fetchers/category";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const CategoriesButton = () => {
+  const router = useRouter();
   const { data, error, isLoading } = useCategories();
 
   if (isLoading) {
@@ -21,7 +23,7 @@ const CategoriesButton = () => {
   if (error) return <p>Error fetching data</p>;
   return (
     <>
-      <div className="m-10 flex gap-16">
+      <div className="m-10 flex gap-16" onClick={() => router.push("/shop")}>
         {data.categories.length > 0 ? (
           data.categories.map((category) => (
             <div key={category._id} className="w-40 h-40 rounded bg-primary/20">
