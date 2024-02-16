@@ -15,27 +15,12 @@ export default function UserPage() {
 
   return (
     <>
-      <div className="w-40 h-40">
-        <ProductSkeleton />
-      </div>
+      <h1 className="text-primary font-bold text-2xl text-center m-5">
+        All Users
+      </h1>
       <div>
         <DataTable columns={columns} data={data} />
       </div>
     </>
-  );
-}
-const shimmer = `
-  relative overflow-hidden
-  before:content-['']
-  before:absolute before:inset-0 before:-translate-x-full
-  before:animate-shimmer
-  before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent
-`;
-
-function ProductSkeleton() {
-  return (
-    <div
-      className={`m-5 h-full w-full relative rounded-xl bg-primary ${shimmer}`}
-    />
   );
 }

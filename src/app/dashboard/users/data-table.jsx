@@ -50,7 +50,7 @@ export function DataTable({ columns, data }) {
           onChange={(event) =>
             table.getColumn("username")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm bg-primary/20"
         />
       </div>
       <Table className="border-2">
