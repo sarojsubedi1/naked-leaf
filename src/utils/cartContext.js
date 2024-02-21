@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { createContext, useContext } from "react";
 import { useLocalStorage } from "react-use";
 
@@ -8,18 +9,19 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useLocalStorage("cart", []);
 
-  const addToCart = (product) => {
+  const addToCart = (product, qty) => {
     const existingItem = cart.find((item) => item._id === product._id);
 
     let updatedCart;
     if (existingItem) {
-      existingItem.cartQty++;
+      existingItem.cartQty += qty;
       updatedCart = [...cart];
     } else {
-      product.cartQty = 1;
+      product.cartQty = qty;
       updatedCart = [...cart, product];
     }
     setCart(updatedCart);
+    toast.success("Added to cart Sucessfully");
   };
 
   const incrementItem = (Id) => {

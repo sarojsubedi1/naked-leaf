@@ -25,7 +25,9 @@ export default function ProductCard({ products }) {
               <h3 className="text-lg font-bold text-primary">
                 {product.title}
               </h3>
-              <p className="text-gray-400">${product.price}</p>
+              <p className="text-gray-400">
+                ${product.price} / Rs{(product.price * 132.7).toFixed(2)}
+              </p>
             </div>
           </Link>
         </div>

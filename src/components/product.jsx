@@ -3,8 +3,11 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import SelectQty from "./select";
 import AddToCart from "./add-to-cart";
+import { useState } from "react";
 
 export default function Product({ product }) {
+  let [Qty, setQty] = useState(1);
+
   return (
     <section className="flex flex-col gap-10 p-6">
       <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
@@ -36,8 +39,27 @@ export default function Product({ product }) {
               ${product.price}
             </div>
           </div>
+          <div className="flex justify-start items-center">
+            <button
+              onClick={() => {
+                if (Qty > 1) {
+                  setQty(Qty - 1);
+                }
+              }}
+              className="bg-white py-2 px-4 border rounded-lg"
+            >
+              -
+            </button>
+            <p className="mx-5 font-semibold">{Qty}</p>
+            <button
+              onClick={() => setQty(Qty + 1)}
+              className="bg-white py-2 px-4 border rounded-lg"
+            >
+              +
+            </button>
+          </div>
           <div className="grid gap-4 md:gap-10">
-            <AddToCart product={product} />
+            <AddToCart product={product} qty={Qty} />
           </div>
         </div>
       </div>

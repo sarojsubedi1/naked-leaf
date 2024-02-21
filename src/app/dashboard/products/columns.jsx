@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { useCategory } from "@/lib/fetchers/category";
 import { DeleteProduct } from "./actions/delete-product";
@@ -13,6 +14,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import Image from "next/image";
 
 export const columns = [
@@ -79,7 +88,21 @@ export const columns = [
   },
   {
     accessorKey: "price",
-    header: "Amount",
+    header: () => {
+      return (
+        <div className="grid place-items-center">
+          <Select value="USD">
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="NPR">Amount(NPR)</SelectItem>
+              <SelectItem value="USD">Amount(USD)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("price"));
 
@@ -88,7 +111,7 @@ export const columns = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="text-center font-medium">{formatted}</div>;
     },
   },
 
