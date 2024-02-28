@@ -3,55 +3,85 @@
 import { toast } from "sonner";
 import { createContext, useContext } from "react";
 import { useLocalStorage } from "react-use";
+import { CheckToken } from "@/hooks/auth/check-token";
+import {
+  addtocart,
+  increaseQty,
+  decreaseQty,
+  removefromcart,
+} from "@/lib/fetchers/cart";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { token, isAuthenticated } = CheckToken();
+
   const [cart, setCart] = useLocalStorage("cart", []);
 
   const addToCart = (product, qty) => {
-    const existingItem = cart.find((item) => item._id === product._id);
-
-    let updatedCart;
-    if (existingItem) {
-      existingItem.cartQty += qty;
-      updatedCart = [...cart];
+    if (isAuthenticated && token) {
+      const items = { productId: product._id, cartQty: qty };
+      addtocart(token, items);
     } else {
-      product.cartQty = qty;
-      updatedCart = [...cart, product];
+      const existingItem = cart.find(
+        (items) => items.product._id === product._id,
+      );
+
+      let cartQty;
+      let updatedCart;
+      if (existingItem) {
+        cartQty += qty;
+        updatedCart = [...cart];
+      } else {
+        cartQty = qty;
+        updatedCart = [...cart, { product, cartQty }];
+      }
+      setCart(updatedCart);
+      toast.success("Added to cart Sucessfully");
     }
-    setCart(updatedCart);
-    toast.success("Added to cart Sucessfully");
   };
 
   const incrementItem = (Id) => {
-    const existingItem = cart.find((item) => item._id === Id);
-    let updatedCart;
-    if (existingItem) {
-      existingItem.cartQty++;
-      updatedCart = [...cart];
+    if (isAuthenticated && token) {
+      increaseQty(token, Id);
+    } else {
+      const index = cart.findIndex((item) => item.product._id === Id);
+
+      const updatedCart = [...cart];
+
+      updatedCart[index].cartQty++;
+
+      setCart(updatedCart);
     }
-    setCart(updatedCart);
   };
 
   const decrementItem = (Id) => {
-    const existingItem = cart.find((item) => item._id === Id);
-
-    if (existingItem) {
-      existingItem.cartQty--;
-
-      if (existingItem.cartQty < 1) {
-        existingItem.cartQty = 1;
-      }
+    if (isAuthenticated && token) {
+      decreaseQty(token, Id);
+    } else {
+      const index = cart.findIndex((item) => item.product._id === Id);
 
       const updatedCart = [...cart];
+
+      if (updatedCart[index].cartQty > 1) {
+        updatedCart[index].cartQty--;
+      } else {
+        updatedCart.splice(index, 1);
+        toast.success("Removed from cart.");
+      }
+
       setCart(updatedCart);
     }
   };
 
   const removeFromCart = (Id) => {
-    const updatedCart = cart.filter((item) => item._id !== Id);
-    setCart(updatedCart);
+    if (isAuthenticated && token) {
+      removefromcart(token, Id);
+    } else {
+      const updatedCart = cart.filter((item) => item.product._id !== Id);
+      setCart(updatedCart);
+      toast.success("Removed from cart.");
+    }
   };
 
   const resetCart = () => {
@@ -59,7 +89,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartTotal = () => {
-    return cart.reduce((total, p) => total + p.price * p.cartQty, 0);
+    return cart.reduce((total, p) => total + p.product.price * p.cartQty, 0);
   };
 
   return (

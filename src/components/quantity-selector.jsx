@@ -2,7 +2,7 @@
 
 import { useCart } from "@/utils/cartContext";
 
-export const QuantitySelector = ({ product }) => {
+export const QuantitySelector = ({ products }) => {
   const { incrementItem, decrementItem } = useCart();
 
   const handleIncrementQty = (id) => {
@@ -16,14 +16,14 @@ export const QuantitySelector = ({ product }) => {
     <>
       <div className="flex justify-start items-center">
         <button
-          onClick={() => handleDecrementQty(product._id)}
+          onClick={() => handleDecrementQty(products.product._id)}
           className="bg-white py-2 px-4 border rounded-lg"
         >
           -
         </button>
-        <p className="mx-5 font-semibold">{product.cartQty}</p>
+        <p className="mx-5 font-semibold">{products.cartQty}</p>
         <button
-          onClick={() => handleIncrementQty(product._id)}
+          onClick={() => handleIncrementQty(products.product._id)}
           className="bg-white py-2 px-4 border rounded-lg"
         >
           +
