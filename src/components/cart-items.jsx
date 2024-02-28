@@ -11,30 +11,20 @@ import { useCarts } from "@/lib/fetchers/cart";
 export default function CartProduct() {
   const { cart, getCartTotal, removeFromCart } = useCart();
 
-  const { isAuthenticated } = CheckToken();
+  const cartData = CartData();
 
-  let Cart = cart;
+  const mergedCart = cartData.length > 0 ? cartData : cart;
 
-  if (isAuthenticated) {
-    const { data, isLoading } = useCarts();
-
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
-    Cart = data.items;
-  }
-
-  const total = getCartTotal();
+  const total = getCartTotal(mergedCart);
 
   const handleRemoveFromCart = (id) => {
     removeFromCart(id);
   };
 
-  if (Cart.length > 0) {
+  if (mergedCart.length > 0) {
     return (
       <>
-        {Cart.map((products) => (
+        {mergedCart.map((products) => (
           <div key={products.product._id} className="border-b p-4">
             <div className="flex gap-4 justify-between">
               <div className="w-36">
@@ -76,4 +66,16 @@ export default function CartProduct() {
     );
   }
   return <p>nothing in cart</p>;
+}
+
+function CartData() {
+  const { isAuthenticated } = CheckToken();
+
+  const { data, isLoading } = useCarts();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return isAuthenticated ? data.items : [];
 }
