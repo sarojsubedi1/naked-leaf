@@ -88,8 +88,11 @@ export const CartProvider = ({ children }) => {
     setCart([]);
   };
 
-  const getCartTotal = () => {
-    return cart.reduce((total, p) => total + p.product.price * p.cartQty, 0);
+  const getCartTotal = (mergedCart) => {
+    return mergedCart.reduce(
+      (total, p) => total + p.product.price * p.cartQty,
+      0,
+    );
   };
 
   return (
