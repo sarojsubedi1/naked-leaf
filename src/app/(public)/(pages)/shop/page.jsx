@@ -32,7 +32,7 @@ export default function Shop() {
       <div className="m-10">
         <h2 className="text-2xl font-bold mb-4">All Products</h2>
         <div className="flex justify-between mb-10 border-b pb-3">
-          <SelectCategory setCategory={setCategory} />
+          <SelectCategory category={category} setCategory={setCategory} />
           <Input
             id="search"
             type="text"

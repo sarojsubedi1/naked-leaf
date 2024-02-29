@@ -1,7 +1,15 @@
 "use client";
 import { useCategories } from "@/lib/fetchers/category";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const SelectCategory = ({ setCategory }) => {
+const SelectCategory = ({ category, setCategory }) => {
   const { data, error, isLoading } = useCategories();
 
   if (isLoading) {
@@ -11,24 +19,38 @@ const SelectCategory = ({ setCategory }) => {
   }
 
   if (error) return <p>Error fetching data</p>;
+
+  const handleChange = (value) => {
+    let fValue;
+    if (value === 1) {
+      fValue = "";
+    } else {
+      fValue = value;
+    }
+    setCategory(fValue);
+  };
+
   return (
     <>
-      <select
-        id="category"
-        onChange={(e) => setCategory(e.target.value)}
-        className="bg-primary/20 px-4 rounded-xl"
-      >
-        <option value="">All Categories</option>
-        {data.categories.length > 0 ? (
-          data.categories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category.name}
-            </option>
-          ))
-        ) : (
-          <p>No categories found.</p>
-        )}
-      </select>
+      <Select onValueChange={handleChange} value={category}>
+        <SelectTrigger className="w-[180px] bg-primary/20">
+          <SelectValue placeholder="Select a category" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value={1}>All</SelectItem>
+            {data.categories.length > 0 ? (
+              data.categories.map((category) => (
+                <SelectItem key={category._id} value={category._id}>
+                  {category.name}
+                </SelectItem>
+              ))
+            ) : (
+              <p>No categories found.</p>
+            )}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </>
   );
 };
